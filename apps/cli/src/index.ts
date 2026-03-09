@@ -6,7 +6,7 @@ import { uploadFile } from './commands/upload';
 import type { Argv } from 'yargs';
 
 yargs(hideBin(process.argv))
-  .scriptName('postiz')
+  .scriptName('trelexa')
   .usage('$0 <command> [options]')
   .command(
     'posts:create',
@@ -235,6 +235,6 @@ yargs(hideBin(process.argv))
   .version()
   .alias('v', 'version')
   .epilogue(
-    'For more information, visit: https://postiz.com\n\nSet your API key: export POSTIZ_API_KEY=your_api_key'
+    'For more information, visit: https://trelexa.ai\n\nSet your API key: export TRELEXA_API_KEY=your_api_key'
   )
   .parse();

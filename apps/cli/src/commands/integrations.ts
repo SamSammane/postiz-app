@@ -1,9 +1,9 @@
-import { PostizAPI } from '../api';
+import { TrelexaAPI } from '../api';
 import { getConfig } from '../config';
 
 export async function listIntegrations() {
   const config = getConfig();
-  const api = new PostizAPI(config);
+  const api = new TrelexaAPI(config);
 
   try {
     const result = await api.listIntegrations();
@@ -18,7 +18,7 @@ export async function listIntegrations() {
 
 export async function getIntegrationSettings(args: any) {
   const config = getConfig();
-  const api = new PostizAPI(config);
+  const api = new TrelexaAPI(config);
 
   if (!args.id) {
     console.error('❌ Integration ID is required');
@@ -38,7 +38,7 @@ export async function getIntegrationSettings(args: any) {
 
 export async function triggerIntegrationTool(args: any) {
   const config = getConfig();
-  const api = new PostizAPI(config);
+  const api = new TrelexaAPI(config);
 
   if (!args.id) {
     console.error('❌ Integration ID is required');

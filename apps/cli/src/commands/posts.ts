@@ -1,10 +1,10 @@
-import { PostizAPI } from '../api';
+import { TrelexaAPI } from '../api';
 import { getConfig } from '../config';
 import { readFileSync, existsSync } from 'fs';
 
 export async function createPost(args: any) {
   const config = getConfig();
-  const api = new PostizAPI(config);
+  const api = new TrelexaAPI(config);
 
   // Support both simple and complex post creation
   let postData: any;
@@ -31,7 +31,7 @@ export async function createPost(args: any) {
     if (integrations.length === 0) {
       console.error('❌ At least one integration ID is required');
       console.error('Use -i or --integrations to specify integration IDs');
-      console.error('Run "postiz integrations:list" to see available integrations');
+      console.error('Run "trelexa integrations:list" to see available integrations');
       process.exit(1);
     }
 
@@ -105,7 +105,7 @@ export async function createPost(args: any) {
 
 export async function listPosts(args: any) {
   const config = getConfig();
-  const api = new PostizAPI(config);
+  const api = new TrelexaAPI(config);
 
   // Set default date range: last 30 days to 30 days in the future
   const defaultStartDate = new Date();
@@ -138,7 +138,7 @@ export async function listPosts(args: any) {
 
 export async function deletePost(args: any) {
   const config = getConfig();
-  const api = new PostizAPI(config);
+  const api = new TrelexaAPI(config);
 
   if (!args.id) {
     console.error('❌ Post ID is required');

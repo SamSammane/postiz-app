@@ -1,10 +1,10 @@
-import { PostizAPI } from '../api';
+import { TrelexaAPI } from '../api';
 import { getConfig } from '../config';
 import { readFileSync } from 'fs';
 
 export async function uploadFile(args: any) {
   const config = getConfig();
-  const api = new PostizAPI(config);
+  const api = new TrelexaAPI(config);
 
   if (!args.file) {
     console.error('❌ File path is required');

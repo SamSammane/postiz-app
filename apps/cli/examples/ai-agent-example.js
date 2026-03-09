@@ -1,29 +1,29 @@
 #!/usr/bin/env node
 
 /**
- * Example: Using Postiz CLI from an AI Agent (Node.js)
+ * Example: Using Trelexa CLI from an AI Agent (Node.js)
  *
- * This demonstrates how AI agents can programmatically use the Postiz CLI
+ * This demonstrates how AI agents can programmatically use the Trelexa CLI
  * to schedule social media posts.
  */
 
 const { execSync } = require('child_process');
 
 // Configuration
-const POSTIZ_API_KEY = process.env.POSTIZ_API_KEY;
+const TRELEXA_API_KEY = process.env.TRELEXA_API_KEY;
 
-if (!POSTIZ_API_KEY) {
-  console.error('❌ POSTIZ_API_KEY environment variable is required');
+if (!TRELEXA_API_KEY) {
+  console.error('❌ TRELEXA_API_KEY environment variable is required');
   process.exit(1);
 }
 
 /**
- * Execute a Postiz CLI command
+ * Execute a Trelexa CLI command
  */
-function runPostizCommand(command) {
+function runTrelexaCommand(command) {
   try {
-    const output = execSync(`postiz ${command}`, {
-      env: { ...process.env, POSTIZ_API_KEY },
+    const output = execSync(`trelexa ${command}`, {
+      env: { ...process.env, TRELEXA_API_KEY },
       encoding: 'utf-8',
     });
     return JSON.parse(output);
@@ -43,7 +43,7 @@ async function main() {
   try {
     // Step 1: Get available integrations
     console.log('📋 Fetching connected integrations...');
-    const integrations = runPostizCommand('integrations:list');
+    const integrations = runTrelexaCommand('integrations:list');
     console.log(`Found ${integrations.length || 0} integrations\n`);
 
     // Step 2: Create multiple scheduled posts
@@ -68,13 +68,13 @@ async function main() {
       console.log(`  ${i + 1}. Creating post scheduled for ${post.schedule}...`);
 
       const command = `posts:create -c "${post.content}" -s "${post.schedule}"`;
-      const result = runPostizCommand(command);
+      const result = runTrelexaCommand(command);
 
       console.log(`  ✅ Post created with ID: ${result.id || 'unknown'}`);
     }
 
     console.log('\n📊 Checking created posts...');
-    const postsList = runPostizCommand('posts:list -l 5');
+    const postsList = runTrelexaCommand('posts:list -l 5');
     console.log(`Total recent posts: ${postsList.total || 0}\n`);
 
     console.log('✅ AI Agent workflow completed successfully!');

@@ -1,17 +1,17 @@
 import fetch, { FormData } from 'node-fetch';
 
-export interface PostizConfig {
+export interface TrelexaConfig {
   apiKey: string;
   apiUrl?: string;
 }
 
-export class PostizAPI {
+export class TrelexaAPI {
   private apiKey: string;
   private apiUrl: string;
 
-  constructor(config: PostizConfig) {
+  constructor(config: TrelexaConfig) {
     this.apiKey = config.apiKey;
-    this.apiUrl = config.apiUrl || 'https://api.postiz.com';
+    this.apiUrl = config.apiUrl || 'http://localhost:3000';
   }
 
   private async request(endpoint: string, options: any = {}) {
