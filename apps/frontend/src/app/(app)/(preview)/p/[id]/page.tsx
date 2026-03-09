@@ -58,7 +58,7 @@ export default async function Auth({
                 >
                   <div className="max-w-[55px]">
                     <Image
-                      src={'/trelexa-logo-new.svg'}
+                      src={'/trelexa-icon.png'}
                       width={55}
                       height={55}
                       alt="Trelexa.ai Logo"

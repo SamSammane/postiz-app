@@ -3,7 +3,7 @@
 export const Logo = () => {
   return (
     <img
-      src="/trelexa-logo-new.svg"
+      src="/trelexa-icon.png"
       alt="Trelexa.ai"
       width={60}
       height={60}

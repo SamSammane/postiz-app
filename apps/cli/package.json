@@ -1,10 +1,10 @@
 {
-  "name": "postiz",
+  "name": "trelexa",
   "version": "2.0.5",
-  "description": "Postiz CLI - Command line interface for the Postiz social media scheduling API",
+  "description": "Trelexa CLI - Command line interface for the Trelexa.ai social media scheduling API",
   "main": "dist/index.js",
   "bin": {
-    "postiz": "./dist/index.js"
+    "trelexa": "./dist/index.js"
   },
   "scripts": {
     "dev": "tsup --watch",
@@ -18,7 +18,7 @@
     "SKILL.md"
   ],
   "keywords": [
-    "postiz",
+    "trelexa",
     "cli",
     "social media",
     "scheduling",
@@ -33,7 +33,7 @@
     "url": "https://github.com/gitroomhq/postiz-app.git",
     "directory": "apps/cli"
   },
-  "homepage": "https://postiz.com",
+  "homepage": "https://trelexa.ai",
   "bugs": {
     "url": "https://github.com/gitroomhq/postiz-app/issues"
   }

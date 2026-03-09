@@ -1,8 +1,8 @@
-# Postiz CLI
+# Trelexa CLI
 
 **Social media automation CLI for AI agents** - Schedule posts across 28+ platforms programmatically.
 
-The Postiz CLI provides a command-line interface to the Postiz API, enabling developers and AI agents to automate social media posting, manage content, and handle media uploads across platforms like Twitter/X, LinkedIn, Reddit, YouTube, TikTok, Instagram, Facebook, and more.
+The Trelexa CLI provides a command-line interface to the Trelexa.ai API, enabling developers and AI agents to automate social media posting, manage content, and handle media uploads across platforms like Twitter/X, LinkedIn, Reddit, YouTube, TikTok, Instagram, Facebook, and more.
 
 ---
 
@@ -11,9 +11,9 @@ The Postiz CLI provides a command-line interface to the Postiz API, enabling dev
 ### From npm (Recommended)
 
 ```bash
-npm install -g postiz
+npm install -g trelexa
 # or
-pnpm install -g postiz
+pnpm install -g trelexa
 ```
 
 ### From Source
@@ -42,16 +42,16 @@ pnpm run start -- posts:list
 
 ## Setup
 
-**Required:** Set your Postiz API key
+**Required:** Set your Trelexa.ai API key
 
 ```bash
-export POSTIZ_API_KEY=your_api_key_here
+export TRELEXA_API_KEY=your_api_key_here
 ```
 
 **Optional:** Custom API endpoint
 
 ```bash
-export POSTIZ_API_URL=https://your-custom-api.com
+export TRELEXA_API_URL=https://your-custom-api.com
 ```
 
 ---
@@ -62,22 +62,22 @@ export POSTIZ_API_URL=https://your-custom-api.com
 
 **List all connected integrations**
 ```bash
-postiz integrations:list
+trelexa integrations:list
 ```
 
 Returns integration IDs, provider names, and metadata.
 
 **Get integration settings schema**
 ```bash
-postiz integrations:settings <integration-id>
+trelexa integrations:settings <integration-id>
 ```
 
 Returns character limits, required settings, and available tools for fetching dynamic data.
 
 **Trigger integration tools**
 ```bash
-postiz integrations:trigger <integration-id> <method-name>
-postiz integrations:trigger <integration-id> <method-name> -d '{"key":"value"}'
+trelexa integrations:trigger <integration-id> <method-name>
+trelexa integrations:trigger <integration-id> <method-name> -d '{"key":"value"}'
 ```
 
 Fetch dynamic data like Reddit flairs, YouTube playlists, LinkedIn companies, etc.
@@ -85,13 +85,13 @@ Fetch dynamic data like Reddit flairs, YouTube playlists, LinkedIn companies, et
 **Examples:**
 ```bash
 # Get Reddit flairs
-postiz integrations:trigger reddit-123 getFlairs -d '{"subreddit":"programming"}'
+trelexa integrations:trigger reddit-123 getFlairs -d '{"subreddit":"programming"}'
 
 # Get YouTube playlists
-postiz integrations:trigger youtube-456 getPlaylists
+trelexa integrations:trigger youtube-456 getPlaylists
 
 # Get LinkedIn companies
-postiz integrations:trigger linkedin-789 getCompanies
+trelexa integrations:trigger linkedin-789 getCompanies
 ```
 
 ---
@@ -100,22 +100,22 @@ postiz integrations:trigger linkedin-789 getCompanies
 
 **Simple scheduled post**
 ```bash
-postiz posts:create -c "Content" -s "2024-12-31T12:00:00Z" -i "integration-id"
+trelexa posts:create -c "Content" -s "2024-12-31T12:00:00Z" -i "integration-id"
 ```
 
 **Draft post**
 ```bash
-postiz posts:create -c "Content" -s "2024-12-31T12:00:00Z" -t draft -i "integration-id"
+trelexa posts:create -c "Content" -s "2024-12-31T12:00:00Z" -t draft -i "integration-id"
 ```
 
 **Post with media**
 ```bash
-postiz posts:create -c "Content" -m "img1.jpg,img2.jpg" -s "2024-12-31T12:00:00Z" -i "integration-id"
+trelexa posts:create -c "Content" -m "img1.jpg,img2.jpg" -s "2024-12-31T12:00:00Z" -i "integration-id"
 ```
 
 **Post with comments** (each comment can have its own media)
 ```bash
-postiz posts:create \
+trelexa posts:create \
   -c "Main post" -m "main.jpg" \
   -c "First comment" -m "comment1.jpg" \
   -c "Second comment" -m "comment2.jpg,comment3.jpg" \
@@ -125,12 +125,12 @@ postiz posts:create \
 
 **Multi-platform post**
 ```bash
-postiz posts:create -c "Content" -s "2024-12-31T12:00:00Z" -i "twitter-id,linkedin-id,facebook-id"
+trelexa posts:create -c "Content" -s "2024-12-31T12:00:00Z" -i "twitter-id,linkedin-id,facebook-id"
 ```
 
 **Platform-specific settings**
 ```bash
-postiz posts:create \
+trelexa posts:create \
   -c "Content" \
   -s "2024-12-31T12:00:00Z" \
   --settings '{"subreddit":[{"value":{"subreddit":"programming","title":"Post Title","type":"text"}}]}' \
@@ -139,7 +139,7 @@ postiz posts:create \
 
 **Complex post from JSON file**
 ```bash
-postiz posts:create --json post.json
+trelexa posts:create --json post.json
 ```
 
 **Options:**
@@ -159,16 +159,16 @@ postiz posts:create --json post.json
 
 **List posts**
 ```bash
-postiz posts:list
-postiz posts:list --startDate "2024-01-01T00:00:00Z" --endDate "2024-12-31T23:59:59Z"
-postiz posts:list --customer "customer-id"
+trelexa posts:list
+trelexa posts:list --startDate "2024-01-01T00:00:00Z" --endDate "2024-12-31T23:59:59Z"
+trelexa posts:list --customer "customer-id"
 ```
 
 Defaults to last 30 days to next 30 days if dates not specified.
 
 **Delete post**
 ```bash
-postiz posts:delete <post-id>
+trelexa posts:delete <post-id>
 ```
 
 ---
@@ -177,7 +177,7 @@ postiz posts:delete <post-id>
 
 **Upload file and get URL**
 ```bash
-postiz upload <file-path>
+trelexa upload <file-path>
 ```
 
 **⚠️ IMPORTANT: Upload Files Before Posting**
@@ -185,7 +185,7 @@ postiz upload <file-path>
 You **must** upload media files to Postiz before using them in posts. Many platforms (especially TikTok, Instagram, and YouTube) require verified/trusted URLs and will reject external links.
 
 **Workflow:**
-1. Upload your file using `postiz upload`
+1. Upload your file using `trelexa upload`
 2. Extract the returned URL
 3. Use that URL in your post's `-m` parameter
 
@@ -198,11 +198,11 @@ You **must** upload media files to Postiz before using them in posts. Many platf
 **Example:**
 ```bash
 # 1. Upload the file first
-RESULT=$(postiz upload video.mp4)
+RESULT=$(trelexa upload video.mp4)
 PATH=$(echo "$RESULT" | jq -r '.path')
 
-# 2. Use the Postiz URL in your post
-postiz posts:create -c "Check out my video!" -s "2024-12-31T12:00:00Z" -m "$PATH" -i "tiktok-id"
+# 2. Use the Trelexa.ai URL in your post
+trelexa posts:create -c "Check out my video!" -s "2024-12-31T12:00:00Z" -m "$PATH" -i "tiktok-id"
 ```
 
 **Why this is required:**
@@ -217,10 +217,10 @@ postiz posts:create -c "Check out my video!" -s "2024-12-31T12:00:00Z" -m "$PATH
 ### Reddit
 ```bash
 # Get available flairs
-postiz integrations:trigger reddit-id getFlairs -d '{"subreddit":"programming"}'
+trelexa integrations:trigger reddit-id getFlairs -d '{"subreddit":"programming"}'
 
 # Post with subreddit and flair
-postiz posts:create \
+trelexa posts:create \
   -c "Content" \
   -s "2024-12-31T12:00:00Z" \
   --settings '{"subreddit":[{"value":{"subreddit":"programming","title":"My Post","type":"text","is_flair_required":true,"flair":{"id":"flair-123","name":"Discussion"}}}]}' \
@@ -230,14 +230,14 @@ postiz posts:create \
 ### YouTube
 ```bash
 # Get playlists
-postiz integrations:trigger youtube-id getPlaylists
+trelexa integrations:trigger youtube-id getPlaylists
 
 # Upload video FIRST (required!)
-VIDEO=$(postiz upload video.mp4)
+VIDEO=$(trelexa upload video.mp4)
 VIDEO_URL=$(echo "$VIDEO" | jq -r '.path')
 
 # Post with uploaded video URL
-postiz posts:create \
+trelexa posts:create \
   -c "Video description" \
   -s "2024-12-31T12:00:00Z" \
   --settings '{"title":"Video Title","type":"public","tags":[{"value":"tech","label":"Tech"}],"playlistId":"playlist-id"}' \
@@ -248,11 +248,11 @@ postiz posts:create \
 ### TikTok
 ```bash
 # Upload video FIRST (TikTok only accepts verified URLs!)
-VIDEO=$(postiz upload video.mp4)
+VIDEO=$(trelexa upload video.mp4)
 VIDEO_URL=$(echo "$VIDEO" | jq -r '.path')
 
 # Post with uploaded video URL
-postiz posts:create \
+trelexa posts:create \
   -c "Video caption #fyp" \
   -s "2024-12-31T12:00:00Z" \
   --settings '{"privacy":"PUBLIC_TO_EVERYONE","duet":true,"stitch":true}' \
@@ -263,10 +263,10 @@ postiz posts:create \
 ### LinkedIn
 ```bash
 # Get companies you can post to
-postiz integrations:trigger linkedin-id getCompanies
+trelexa integrations:trigger linkedin-id getCompanies
 
 # Post as company
-postiz posts:create \
+trelexa posts:create \
   -c "Company announcement" \
   -s "2024-12-31T12:00:00Z" \
   --settings '{"companyId":"company-123"}' \
@@ -276,7 +276,7 @@ postiz posts:create \
 ### X (Twitter)
 ```bash
 # Create thread
-postiz posts:create \
+trelexa posts:create \
   -c "Thread 1/3 🧵" \
   -c "Thread 2/3" \
   -c "Thread 3/3" \
@@ -285,7 +285,7 @@ postiz posts:create \
   -i "twitter-id"
 
 # With reply settings
-postiz posts:create \
+trelexa posts:create \
   -c "Tweet content" \
   -s "2024-12-31T12:00:00Z" \
   --settings '{"who_can_reply_post":"everyone"}' \
@@ -295,11 +295,11 @@ postiz posts:create \
 ### Instagram
 ```bash
 # Upload image FIRST (Instagram requires verified URLs!)
-IMAGE=$(postiz upload image.jpg)
+IMAGE=$(trelexa upload image.jpg)
 IMAGE_URL=$(echo "$IMAGE" | jq -r '.path')
 
 # Regular post
-postiz posts:create \
+trelexa posts:create \
   -c "Caption #hashtag" \
   -s "2024-12-31T12:00:00Z" \
   --settings '{"post_type":"post"}' \
@@ -307,10 +307,10 @@ postiz posts:create \
   -i "instagram-id"
 
 # Story (upload first)
-STORY=$(postiz upload story.jpg)
+STORY=$(trelexa upload story.jpg)
 STORY_URL=$(echo "$STORY" | jq -r '.path')
 
-postiz posts:create \
+trelexa posts:create \
   -c "" \
   -s "2024-12-31T12:00:00Z" \
   --settings '{"post_type":"story"}' \
@@ -338,7 +338,7 @@ This allows AI agents to adapt to different platforms without hardcoded knowledg
 For complex posts with multiple platforms and settings:
 
 ```bash
-postiz posts:create --json complex-post.json
+trelexa posts:create --json complex-post.json
 ```
 
 JSON structure:
@@ -376,7 +376,7 @@ JSON structure:
 Every command outputs JSON for easy parsing:
 
 ```bash
-INTEGRATIONS=$(postiz integrations:list | jq -r '.')
+INTEGRATIONS=$(trelexa integrations:list | jq -r '.')
 REDDIT_ID=$(echo "$INTEGRATIONS" | jq -r '.[] | select(.identifier=="reddit") | .id')
 ```
 
@@ -388,7 +388,7 @@ Comments are automatically converted to threads/replies based on platform:
 - **Instagram**: First comment
 
 ```bash
-postiz posts:create \
+trelexa posts:create \
   -c "Main post" \
   -c "Comment 1" \
   -c "Comment 2" \
@@ -402,11 +402,11 @@ postiz posts:create \
 ### Reddit Post with Flair
 ```bash
 #!/bin/bash
-REDDIT_ID=$(postiz integrations:list | jq -r '.[] | select(.identifier=="reddit") | .id')
-FLAIRS=$(postiz integrations:trigger "$REDDIT_ID" getFlairs -d '{"subreddit":"programming"}')
+REDDIT_ID=$(trelexa integrations:list | jq -r '.[] | select(.identifier=="reddit") | .id')
+FLAIRS=$(trelexa integrations:trigger "$REDDIT_ID" getFlairs -d '{"subreddit":"programming"}')
 FLAIR_ID=$(echo "$FLAIRS" | jq -r '.output[0].id')
 
-postiz posts:create \
+trelexa posts:create \
   -c "My post content" \
   -s "2024-12-31T12:00:00Z" \
   --settings "{\"subreddit\":[{\"value\":{\"subreddit\":\"programming\",\"title\":\"Post Title\",\"type\":\"text\",\"is_flair_required\":true,\"flair\":{\"id\":\"$FLAIR_ID\",\"name\":\"Discussion\"}}}]}" \
@@ -416,10 +416,10 @@ postiz posts:create \
 ### YouTube Video Upload
 ```bash
 #!/bin/bash
-VIDEO=$(postiz upload video.mp4)
+VIDEO=$(trelexa upload video.mp4)
 VIDEO_PATH=$(echo "$VIDEO" | jq -r '.path')
 
-postiz posts:create \
+trelexa posts:create \
   -c "Video description..." \
   -s "2024-12-31T12:00:00Z" \
   --settings '{"title":"My Video","type":"public","tags":[{"value":"tech","label":"Tech"}]}' \
@@ -430,7 +430,7 @@ postiz posts:create \
 ### Multi-Platform Campaign
 ```bash
 #!/bin/bash
-postiz posts:create \
+trelexa posts:create \
   -c "Same content everywhere" \
   -s "2024-12-31T12:00:00Z" \
   -m "image.jpg" \
@@ -444,7 +444,7 @@ DATES=("2024-02-14T09:00:00Z" "2024-02-15T09:00:00Z" "2024-02-16T09:00:00Z")
 CONTENT=("Monday motivation 💪" "Tuesday tips 💡" "Wednesday wisdom 🧠")
 
 for i in "${!DATES[@]}"; do
-  postiz posts:create \
+  trelexa posts:create \
     -c "${CONTENT[$i]}" \
     -s "${DATES[$i]}" \
     -i "twitter-id"
@@ -476,7 +476,7 @@ done
 
 ## API Endpoints
 
-The CLI interacts with these Postiz API endpoints:
+The CLI interacts with these Trelexa.ai API endpoints:
 
 | Endpoint | Method | Purpose |
 |----------|--------|---------|
@@ -494,8 +494,8 @@ The CLI interacts with these Postiz API endpoints:
 
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
-| `POSTIZ_API_KEY` | ✅ Yes | - | Your Postiz API key |
-| `POSTIZ_API_URL` | No | `https://api.postiz.com` | Custom API endpoint |
+| `TRELEXA_API_KEY` | ✅ Yes | - | Your Trelexa.ai API key |
+| `TRELEXA_API_URL` | No | `https://api.postiz.com` | Custom API endpoint |
 
 ---
 
@@ -510,7 +510,7 @@ The CLI provides clear error messages with exit codes:
 
 | Error | Solution |
 |-------|----------|
-| `POSTIZ_API_KEY is not set` | Set environment variable: `export POSTIZ_API_KEY=key` |
+| `TRELEXA_API_KEY is not set` | Set environment variable: `export TRELEXA_API_KEY=key` |
 | `Integration not found` | Run `integrations:list` to get valid IDs |
 | `startDate/endDate required` | Use ISO 8601 format: `"2024-12-31T12:00:00Z"` |
 | `Invalid settings` | Check `integrations:settings` for required fields |
@@ -567,29 +567,29 @@ Output in `dist/`:
 
 ```bash
 # Environment setup
-export POSTIZ_API_KEY=your_key
+export TRELEXA_API_KEY=your_key
 
 # Discovery
-postiz integrations:list                           # List integrations
-postiz integrations:settings <id>                  # Get settings
-postiz integrations:trigger <id> <method> -d '{}'  # Fetch data
+trelexa integrations:list                           # List integrations
+trelexa integrations:settings <id>                  # Get settings
+trelexa integrations:trigger <id> <method> -d '{}'  # Fetch data
 
 # Posting (date is required)
-postiz posts:create -c "text" -s "2024-12-31T12:00:00Z" -i "id"                    # Simple
-postiz posts:create -c "text" -s "2024-12-31T12:00:00Z" -t draft -i "id"          # Draft
-postiz posts:create -c "text" -m "img.jpg" -s "2024-12-31T12:00:00Z" -i "id"      # With media
-postiz posts:create -c "main" -c "comment" -s "2024-12-31T12:00:00Z" -i "id"      # With comment
-postiz posts:create -c "text" -s "2024-12-31T12:00:00Z" --settings '{}' -i "id"   # Platform-specific
-postiz posts:create --json file.json                                               # Complex
+trelexa posts:create -c "text" -s "2024-12-31T12:00:00Z" -i "id"                    # Simple
+trelexa posts:create -c "text" -s "2024-12-31T12:00:00Z" -t draft -i "id"          # Draft
+trelexa posts:create -c "text" -m "img.jpg" -s "2024-12-31T12:00:00Z" -i "id"      # With media
+trelexa posts:create -c "main" -c "comment" -s "2024-12-31T12:00:00Z" -i "id"      # With comment
+trelexa posts:create -c "text" -s "2024-12-31T12:00:00Z" --settings '{}' -i "id"   # Platform-specific
+trelexa posts:create --json file.json                                               # Complex
 
 # Management
-postiz posts:list                                  # List posts
-postiz posts:delete <id>                          # Delete post
-postiz upload <file>                              # Upload media
+trelexa posts:list                                  # List posts
+trelexa posts:delete <id>                          # Delete post
+trelexa upload <file>                              # Upload media
 
 # Help
-postiz --help                                     # Show help
-postiz posts:create --help                        # Command help
+trelexa --help                                     # Show help
+trelexa posts:create --help                        # Command help
 ```
 
 ---
@@ -615,8 +615,8 @@ AGPL-3.0
 
 ## Links
 
-- **Website:** [postiz.com](https://postiz.com)
-- **API Docs:** [postiz.com/api-docs](https://postiz.com/api-docs)
+- **Website:** [postiz.com](https://trelexa.ai)
+- **API Docs:** [postiz.com/api-docs](https://trelexa.ai/api-docs)
 - **GitHub:** [gitroomhq/postiz-app](https://github.com/gitroomhq/postiz-app)
 - **Issues:** [Report bugs](https://github.com/gitroomhq/postiz-app/issues)
 
