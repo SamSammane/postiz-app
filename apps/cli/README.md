@@ -19,7 +19,7 @@ pnpm install -g trelexa
 ### From Source
 
 ```bash
-git clone https://github.com/gitroomhq/postiz-app.git
+git clone https://github.com/SamSammane/postiz-app.git
 cd postiz-app/apps/cli
 pnpm install
 pnpm run build
@@ -182,7 +182,7 @@ trelexa upload <file-path>
 
 **⚠️ IMPORTANT: Upload Files Before Posting**
 
-You **must** upload media files to Postiz before using them in posts. Many platforms (especially TikTok, Instagram, and YouTube) require verified/trusted URLs and will reject external links.
+You **must** upload media files to Trelexa.ai before using them in posts. Many platforms (especially TikTok, Instagram, and YouTube) require verified/trusted URLs and will reject external links.
 
 **Workflow:**
 1. Upload your file using `trelexa upload`
@@ -208,7 +208,7 @@ trelexa posts:create -c "Check out my video!" -s "2024-12-31T12:00:00Z" -m "$PAT
 **Why this is required:**
 - **TikTok, Instagram, YouTube** only accept URLs from trusted domains
 - **Security:** Platforms verify media sources to prevent abuse
-- **Reliability:** Postiz ensures your media is always accessible
+- **Reliability:** Trelexa.ai ensures your media is always accessible
 
 ---
 
@@ -495,7 +495,7 @@ The CLI interacts with these Trelexa.ai API endpoints:
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
 | `TRELEXA_API_KEY` | ✅ Yes | - | Your Trelexa.ai API key |
-| `TRELEXA_API_URL` | No | `https://api.postiz.com` | Custom API endpoint |
+| `TRELEXA_API_URL` | No | `http://localhost:3000` | Custom API endpoint |
 
 ---
 
@@ -527,7 +527,7 @@ The CLI provides clear error messages with exit codes:
 apps/cli/
 ├── src/
 │   ├── index.ts              # CLI entry point with yargs
-│   ├── api.ts                # PostizAPI client class
+│   ├── api.ts                # TrelexaAPI client class
 │   ├── config.ts             # Environment configuration
 │   └── commands/
 │       ├── posts.ts          # Post management commands
@@ -596,7 +596,7 @@ trelexa posts:create --help                        # Command help
 
 ## Contributing
 
-This CLI is part of the [Postiz monorepo](https://github.com/gitroomhq/postiz-app).
+This CLI is part of the [Trelexa.ai monorepo](https://github.com/SamSammane/postiz-app).
 
 To contribute:
 1. Fork the repository
@@ -615,10 +615,10 @@ AGPL-3.0
 
 ## Links
 
-- **Website:** [postiz.com](https://trelexa.ai)
-- **API Docs:** [postiz.com/api-docs](https://trelexa.ai/api-docs)
-- **GitHub:** [gitroomhq/postiz-app](https://github.com/gitroomhq/postiz-app)
-- **Issues:** [Report bugs](https://github.com/gitroomhq/postiz-app/issues)
+- **Website:** [trelexa.ai](https://trelexa.ai)
+- **API Docs:** [trelexa.ai/api-docs](https://trelexa.ai/api-docs)
+- **GitHub:** [SamSammane/postiz-app](https://github.com/SamSammane/postiz-app)
+- **Issues:** [Report bugs](https://github.com/SamSammane/postiz-app/issues)
 
 ---
 

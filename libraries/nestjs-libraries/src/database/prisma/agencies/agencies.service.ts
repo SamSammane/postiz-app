@@ -85,7 +85,7 @@ export class AgenciesService {
   async createAgency(user: User, body: CreateAgencyDto) {
     const agency = await this._agenciesRepository.createAgency(user, body);
     await this._notificationService.sendEmail(
-      'nevo@postiz.com',
+      'admin@trelexa.ai',
       'New agency created',
       `
 <html lang="en">
@@ -193,10 +193,10 @@ export class AgenciesService {
         </tr>
         <tr>
             <td style="padding: 20px; text-align: center; background-color: #000;">
-                <a href="https://postiz.com/agencies/action/approve/${
+                <a href="https://trelexa.ai/agencies/action/approve/${
                   agency.id
                 }" style="margin: 0 10px; text-decoration: none; color: #007bff;">To approve click here</a><br /><br /><br />
-                <a href="https://postiz.com/agencies/action/decline/${
+                <a href="https://trelexa.ai/agencies/action/decline/${
                   agency.id
                 }" style="margin: 0 10px; text-decoration: none; color: #007bff;">To decline click here</a><br /><br /><br />
             </td>

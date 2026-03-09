@@ -1,14 +1,14 @@
-# Postiz CLI - Creation Summary
+# Trelexa CLI - Creation Summary
 
 ## ✅ What Was Created
 
-A complete, production-ready CLI package for the Postiz API has been successfully created at `apps/cli/`.
+A complete, production-ready CLI package for the Trelexa.ai API has been successfully created at `apps/cli/`.
 
 ### Package Details
 
-- **Package Name:** `postiz`
+- **Package Name:** `trelexa`
 - **Version:** 1.0.0
-- **Executable:** `postiz` command
+- **Executable:** `trelexa` command
 - **Lines of Code:** 359 lines
 - **Build Size:** ~491KB (compressed)
 - **License:** AGPL-3.0
@@ -19,7 +19,7 @@ A complete, production-ready CLI package for the Postiz API has been successfull
 apps/cli/
 ├── src/                          # Source code (359 lines)
 │   ├── index.ts                  # CLI entry point with yargs
-│   ├── api.ts                    # Postiz API client
+│   ├── api.ts                    # Trelexa.ai API client
 │   ├── config.ts                 # Environment configuration
 │   └── commands/
 │       ├── posts.ts              # Post management
@@ -74,8 +74,8 @@ apps/cli/
 
 ### Technical Features
 
-- ✅ Environment variable configuration (POSTIZ_API_KEY)
-- ✅ Custom API URL support (POSTIZ_API_URL)
+- ✅ Environment variable configuration (TRELEXA_API_KEY)
+- ✅ Custom API URL support (TRELEXA_API_URL)
 - ✅ Comprehensive error handling
 - ✅ User-friendly error messages with emojis
 - ✅ JSON output for programmatic parsing
@@ -143,16 +143,16 @@ apps/cli/
 
 ```bash
 # Set API key
-export POSTIZ_API_KEY=your_api_key
+export TRELEXA_API_KEY=your_api_key
 
 # Create a post
-postiz posts:create -c "Hello World!" -i "twitter-123"
+trelexa posts:create -c "Hello World!" -i "twitter-123"
 
 # List posts
-postiz posts:list
+trelexa posts:list
 
 # Upload media
-postiz upload ./image.png
+trelexa upload ./image.png
 ```
 
 ### AI Agent Usage
@@ -161,8 +161,8 @@ postiz upload ./image.png
 const { execSync } = require('child_process');
 
 function postToSocial(content) {
-  return execSync(`postiz posts:create -c "${content}"`, {
-    env: { ...process.env, POSTIZ_API_KEY: 'your_key' }
+  return execSync(`trelexa posts:create -c "${content}"`, {
+    env: { ...process.env, TRELEXA_API_KEY: 'your_key' }
   });
 }
 ```
@@ -196,18 +196,18 @@ function postToSocial(content) {
 
 ```
 ✅ pnpm run build:cli - SUCCESS
-✅ postiz --help - SUCCESS
-✅ postiz --version - SUCCESS
-✅ postiz posts:create --help - SUCCESS
+✅ trelexa --help - SUCCESS
+✅ trelexa --version - SUCCESS
+✅ trelexa posts:create --help - SUCCESS
 ✅ Error without API key - WORKS AS EXPECTED
 ```
 
 ## 📋 Checklist
 
 - ✅ CLI package created in apps/cli
-- ✅ Package name is "postiz"
-- ✅ Uses POSTIZ_API_KEY environment variable
-- ✅ Integrates with Postiz public API
+- ✅ Package name is "trelexa"
+- ✅ Uses TRELEXA_API_KEY environment variable
+- ✅ Integrates with Trelexa.ai public API
 - ✅ Built for AI agent usage
 - ✅ SKILL.md created with comprehensive guide
 - ✅ README.md with full documentation
@@ -234,7 +234,7 @@ cd apps/cli
 pnpm link --global
 
 # Use anywhere
-postiz --help
+trelexa --help
 ```
 
 ### To Publish to npm
@@ -250,8 +250,8 @@ pnpm run publish
 
 ### To Use in AI Agents
 
-1. Install: `npm install -g postiz`
-2. Set API key: `export POSTIZ_API_KEY=your_key`
+1. Install: `npm install -g trelexa`
+2. Set API key: `export TRELEXA_API_KEY=your_key`
 3. Use commands programmatically
 4. Parse JSON output
 5. See SKILL.md for patterns
@@ -269,7 +269,7 @@ pnpm run publish
 
 ## 🎉 Summary
 
-A complete, production-ready CLI tool for Postiz has been created with:
+A complete, production-ready CLI tool for Trelexa.ai has been created with:
 
 - ✅ All requested features implemented
 - ✅ Comprehensive documentation for users and AI agents

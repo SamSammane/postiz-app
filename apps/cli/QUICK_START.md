@@ -6,7 +6,7 @@
 
 ```bash
 # Navigate to the monorepo root
-cd /path/to/gitroom
+cd /path/to/trelexa
 
 # Install dependencies
 pnpm install
@@ -27,7 +27,7 @@ cd apps/cli
 # Link globally
 pnpm link --global
 
-# Now you can use 'postiz' anywhere
+# Now you can use 'trelexa' anywhere
 trelexa --help
 ```
 

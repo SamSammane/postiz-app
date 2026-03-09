@@ -322,7 +322,7 @@ export class StripeService {
         cancel_at_period_end:
           !currentUserSubscription.data[0].cancel_at_period_end,
         metadata: {
-          service: 'gitroom',
+          service: 'trelexa',
           id,
         },
       }
@@ -443,7 +443,7 @@ export class StripeService {
       subscription_data: {
         ...(allowTrial ? { trial_period_days: 7 } : {}),
         metadata: {
-          service: 'gitroom',
+          service: 'trelexa',
           ...body,
           userId,
           uniqueId,
@@ -504,7 +504,7 @@ export class StripeService {
       subscription_data: {
         ...(allowTrial ? { trial_period_days: 7 } : {}),
         metadata: {
-          service: 'gitroom',
+          service: 'trelexa',
           ...body,
           userId,
           uniqueId,
@@ -778,7 +778,7 @@ export class StripeService {
       await stripe.subscriptions.update(currentUserSubscription.data[0].id, {
         cancel_at_period_end: false,
         metadata: {
-          service: 'gitroom',
+          service: 'trelexa',
           ...body,
           userId,
           id,

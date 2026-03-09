@@ -46,7 +46,7 @@ export const AgentChat: FC = () => {
       credentials="include"
       runtimeUrl={backendUrl + '/copilot/agent'}
       showDevConsole={false}
-      agent="postiz"
+      agent="trelexa"
       properties={{
         integrations: properties,
       }}

@@ -55,13 +55,13 @@ export const PublicComponent = () => {
         <h3 className="text-[20px]">{t('public_api', 'Public API')}</h3>
         <div className="text-customColor18 mt-[4px]">
           {t(
-            'use_postiz_api_to_integrate_with_your_tools',
+            'use_trelexa_api_to_integrate_with_your_tools',
             'Use Trelexa.ai API to integrate with your tools.'
           )}
           <br />
           <a
             className="underline hover:font-bold hover:underline"
-            href="https://docs.postiz.com/public-api"
+            href="https://docs.trelexa.ai/public-api"
             target="_blank"
           >
             {t(
@@ -71,7 +71,7 @@ export const PublicComponent = () => {
           </a>
           <a
             className="underline hover:font-bold hover:underline"
-            href="https://www.npmjs.com/package/n8n-nodes-postiz"
+            href="https://www.npmjs.com/package/n8n-nodes-trelexa"
             target="_blank"
           >
             <br />
@@ -114,7 +114,7 @@ export const PublicComponent = () => {
         <h3 className="text-[20px]">{t('mcp', 'MCP')}</h3>
         <div className="text-customColor18 mt-[4px]">
           {t(
-            'connect_your_mcp_client_to_postiz_to_schedule_your_posts_faster',
+            'connect_your_mcp_client_to_trelexa_to_schedule_your_posts_faster',
             'Connect Trelexa.ai MCP server to your client (Http streaming) to schedule your posts faster.'
           )}
         </div>

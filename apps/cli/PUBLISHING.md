@@ -1,6 +1,6 @@
-# Publishing the Postiz CLI to npm
+# Publishing the Trelexa CLI to npm
 
-## Quick Publish (Current Name: "postiz")
+## Quick Publish (Current Name: "trelexa")
 
 ```bash
 # From apps/cli directory
@@ -10,17 +10,17 @@ pnpm publish --access public
 
 Then users can install:
 ```bash
-npm install -g postiz
+npm install -g trelexa
 # or
-pnpm install -g postiz
+pnpm install -g trelexa
 
 # And use:
-postiz --help
+trelexa --help
 ```
 
 ## Publishing with a Different Package Name
 
-If you want to publish as a different npm package name (e.g., "agent-postiz"):
+If you want to publish as a different npm package name (e.g., "agent-trelexa"):
 
 ### 1. Change Package Name
 
@@ -28,10 +28,10 @@ Edit `apps/cli/package.json`:
 
 ```json
 {
-  "name": "agent-postiz",  // ← Changed package name
+  "name": "agent-trelexa",  // ← Changed package name
   "version": "1.0.0",
   "bin": {
-    "postiz": "./dist/index.js"  // ← Keep command name!
+    "trelexa": "./dist/index.js"  // ← Keep command name!
   }
 }
 ```
@@ -49,55 +49,55 @@ pnpm publish --access public
 ### 3. Users Install
 
 ```bash
-npm install -g agent-postiz
+npm install -g agent-trelexa
 # or
-pnpm install -g agent-postiz
+pnpm install -g agent-trelexa
 ```
 
 ### 4. Users Use
 
-Even though the package is called "agent-postiz", the command is still:
+Even though the package is called "agent-trelexa", the command is still:
 
 ```bash
-postiz --help  # ← Command name from "bin" field
-postiz posts:create -c "Hello!" -i "twitter-123"
+trelexa --help  # ← Command name from "bin" field
+trelexa posts:create -c "Hello!" -i "twitter-123"
 ```
 
 ## Package Name vs Command Name
 
 | Field | Purpose | Example |
 |-------|---------|---------|
-| `"name"` | npm package name (what you install) | `"agent-postiz"` |
-| `"bin"` | Command name (what you type) | `"postiz"` |
+| `"name"` | npm package name (what you install) | `"agent-trelexa"` |
+| `"bin"` | Command name (what you type) | `"trelexa"` |
 
 **Examples:**
 
 1. **Same name:**
    ```json
-   "name": "postiz",
-   "bin": { "postiz": "./dist/index.js" }
+   "name": "trelexa",
+   "bin": { "trelexa": "./dist/index.js" }
    ```
-   Install: `npm i -g postiz`
-   Use: `postiz`
+   Install: `npm i -g trelexa`
+   Use: `trelexa`
 
 2. **Different names:**
    ```json
-   "name": "agent-postiz",
-   "bin": { "postiz": "./dist/index.js" }
+   "name": "agent-trelexa",
+   "bin": { "trelexa": "./dist/index.js" }
    ```
-   Install: `npm i -g agent-postiz`
-   Use: `postiz`
+   Install: `npm i -g agent-trelexa`
+   Use: `trelexa`
 
 3. **Multiple commands:**
    ```json
-   "name": "agent-postiz",
+   "name": "agent-trelexa",
    "bin": {
-     "postiz": "./dist/index.js",
+     "trelexa": "./dist/index.js",
      "pz": "./dist/index.js"
    }
    ```
-   Install: `npm i -g agent-postiz`
-   Use: `postiz` or `pz`
+   Install: `npm i -g agent-trelexa`
+   Use: `trelexa` or `pz`
 
 ## Publishing Checklist
 
@@ -105,7 +105,7 @@ postiz posts:create -c "Hello!" -i "twitter-123"
 
 - [ ] Verify package name is available on npm
   ```bash
-  npm view postiz
+  npm view trelexa
   # If error "404 Not Found" - name is available!
   ```
 
@@ -131,7 +131,7 @@ postiz posts:create -c "Hello!" -i "twitter-123"
 - [ ] Test locally
   ```bash
   pnpm link --global
-  postiz --help
+  trelexa --help
   ```
 
 ### Publish to npm
@@ -153,14 +153,14 @@ pnpm run publish-cli
 
 Verify it's published:
 ```bash
-npm view postiz
+npm view trelexa
 # Should show your package info
 ```
 
 Test installation:
 ```bash
-npm install -g postiz
-postiz --version
+npm install -g trelexa
+trelexa --version
 ```
 
 ## Using from Monorepo Root
@@ -214,21 +214,21 @@ If you want to publish under an organization scope:
 
 ```json
 {
-  "name": "@yourorg/postiz",
+  "name": "@yourorg/trelexa",
   "bin": {
-    "postiz": "./dist/index.js"
+    "trelexa": "./dist/index.js"
   }
 }
 ```
 
 Install:
 ```bash
-npm install -g @yourorg/postiz
+npm install -g @yourorg/trelexa
 ```
 
 Use:
 ```bash
-postiz --help
+trelexa --help
 ```
 
 ## Testing Before Publishing
@@ -244,7 +244,7 @@ node dist/index.js --help
 
 ```bash
 pnpm link --global
-postiz --help
+trelexa --help
 pnpm unlink --global
 ```
 
@@ -262,9 +262,9 @@ npm pack
 # Creates a .tgz file
 
 # Test installing the tarball
-npm install -g ./postiz-1.0.0.tgz
-postiz --help
-npm uninstall -g postiz
+npm install -g ./trelexa-1.0.0.tgz
+trelexa --help
+npm uninstall -g trelexa
 ```
 
 ## Continuous Publishing
@@ -312,13 +312,13 @@ git push origin cli-v1.0.0
 ### "You do not have permission to publish"
 
 - Make sure you're logged in: `npm login`
-- Check package name isn't taken: `npm view postiz`
+- Check package name isn't taken: `npm view trelexa`
 - If scoped, ensure org access: `npm org ls yourorg`
 
 ### "Package name too similar to existing package"
 
 - Choose a more unique name
-- Or use a scoped package: `@yourorg/postiz`
+- Or use a scoped package: `@yourorg/trelexa`
 
 ### "Missing required files"
 
@@ -330,19 +330,19 @@ git push origin cli-v1.0.0
 
 - Check `"bin"` field is correct
 - Ensure `dist/index.js` has shebang: `#!/usr/bin/env node`
-- Try reinstalling: `npm uninstall -g postiz && npm install -g postiz`
+- Try reinstalling: `npm uninstall -g trelexa && npm install -g trelexa`
 
 ## Recommended Names
 
-If "postiz" is taken, consider:
+If "trelexa" is taken, consider:
 
-- `@postiz/cli`
-- `postiz-cli`
-- `postiz-agent`
-- `agent-postiz`
-- `@yourorg/postiz`
+- `@trelexa/cli`
+- `trelexa-cli`
+- `trelexa-agent`
+- `agent-trelexa`
+- `@yourorg/trelexa`
 
-Remember: The package name is just for installation. The command can still be `postiz`!
+Remember: The package name is just for installation. The command can still be `trelexa`!
 
 ## Summary
 
@@ -362,16 +362,16 @@ pnpm publish --access public
 **Users install:**
 
 ```bash
-npm install -g postiz
+npm install -g trelexa
 # or
-pnpm install -g postiz
+pnpm install -g trelexa
 ```
 
 **Users use:**
 
 ```bash
-postiz --help
-postiz posts:create -c "Hello!" -i "twitter-123"
+trelexa --help
+trelexa posts:create -c "Hello!" -i "twitter-123"
 ```
 
 🚀 **Ready to publish!**

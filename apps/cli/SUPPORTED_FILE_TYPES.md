@@ -1,19 +1,19 @@
 # Supported File Types for Upload
 
-The Postiz CLI now correctly detects and uploads various media types.
+The Trelexa CLI now correctly detects and uploads various media types.
 
 ## How It Works
 
 The CLI automatically detects the MIME type based on the file extension:
 
 ```bash
-postiz upload video.mp4
+trelexa upload video.mp4
 # ✅ Detected as: video/mp4
 
-postiz upload image.png
+trelexa upload image.png
 # ✅ Detected as: image/png
 
-postiz upload audio.mp3
+trelexa upload audio.mp3
 # ✅ Detected as: audio/mpeg
 ```
 
@@ -33,10 +33,10 @@ postiz upload audio.mp3
 
 **Examples:**
 ```bash
-postiz upload photo.jpg
-postiz upload logo.png
-postiz upload animation.gif
-postiz upload icon.svg
+trelexa upload photo.jpg
+trelexa upload logo.png
+trelexa upload animation.gif
+trelexa upload icon.svg
 ```
 
 ### Videos
@@ -56,10 +56,10 @@ postiz upload icon.svg
 
 **Examples:**
 ```bash
-postiz upload video.mp4
-postiz upload clip.mov
-postiz upload recording.webm
-postiz upload movie.mkv
+trelexa upload video.mp4
+trelexa upload clip.mov
+trelexa upload recording.webm
+trelexa upload movie.mkv
 ```
 
 ### Audio
@@ -75,9 +75,9 @@ postiz upload movie.mkv
 
 **Examples:**
 ```bash
-postiz upload podcast.mp3
-postiz upload song.wav
-postiz upload audio.ogg
+trelexa upload podcast.mp3
+trelexa upload song.wav
+trelexa upload audio.ogg
 ```
 
 ### Documents
@@ -90,8 +90,8 @@ postiz upload audio.ogg
 
 **Examples:**
 ```bash
-postiz upload document.pdf
-postiz upload report.docx
+trelexa upload document.pdf
+trelexa upload report.docx
 ```
 
 ### Other Files
@@ -105,30 +105,30 @@ For file types not listed above, the CLI uses:
 ### Upload an Image
 
 ```bash
-postiz upload ./images/photo.jpg
+trelexa upload ./images/photo.jpg
 ```
 
 Response:
 ```json
 {
   "id": "upload-123",
-  "path": "https://cdn.postiz.com/uploads/photo.jpg",
-  "url": "https://cdn.postiz.com/uploads/photo.jpg"
+  "path": "https://cdn.trelexa.ai/uploads/photo.jpg",
+  "url": "https://cdn.trelexa.ai/uploads/photo.jpg"
 }
 ```
 
 ### Upload a Video (MP4)
 
 ```bash
-postiz upload ./videos/promo.mp4
+trelexa upload ./videos/promo.mp4
 ```
 
 Response:
 ```json
 {
   "id": "upload-456",
-  "path": "https://cdn.postiz.com/uploads/promo.mp4",
-  "url": "https://cdn.postiz.com/uploads/promo.mp4"
+  "path": "https://cdn.trelexa.ai/uploads/promo.mp4",
+  "url": "https://cdn.trelexa.ai/uploads/promo.mp4"
 }
 ```
 
@@ -136,14 +136,14 @@ Response:
 
 ```bash
 # 1. Upload the file
-RESULT=$(postiz upload video.mp4)
+RESULT=$(trelexa upload video.mp4)
 echo $RESULT
 
 # 2. Extract the path (you'll need jq or similar)
 PATH=$(echo $RESULT | jq -r '.path')
 
 # 3. Use in a post
-postiz posts:create \
+trelexa posts:create \
   -c "Check out my video!" \
   -m "$PATH" \
   -i "tiktok-123"
@@ -153,13 +153,13 @@ postiz posts:create \
 
 ```bash
 # Upload images
-postiz upload image1.jpg
-postiz upload image2.png
-postiz upload image3.gif
+trelexa upload image1.jpg
+trelexa upload image2.png
+trelexa upload image3.gif
 
 # Upload videos
-postiz upload video1.mp4
-postiz upload video2.mov
+trelexa upload video1.mp4
+trelexa upload video2.mov
 ```
 
 ## What Changed (Fix)
@@ -167,7 +167,7 @@ postiz upload video2.mov
 ### Before (❌ Bug)
 
 ```bash
-postiz upload video.mp4
+trelexa upload video.mp4
 # ❌ Was detected as: image/jpeg (WRONG!)
 ```
 
@@ -176,13 +176,13 @@ The problem: The CLI defaulted to `image/jpeg` for any unknown file type.
 ### After (✅ Fixed)
 
 ```bash
-postiz upload video.mp4
+trelexa upload video.mp4
 # ✅ Correctly detected as: video/mp4
 
-postiz upload audio.mp3
+trelexa upload audio.mp3
 # ✅ Correctly detected as: audio/mpeg
 
-postiz upload document.pdf
+trelexa upload document.pdf
 # ✅ Correctly detected as: application/pdf
 ```
 
@@ -224,7 +224,7 @@ Some platforms may not accept certain file types. Check the platform's documenta
 ffmpeg -i video.avi video.mp4
 
 # Then upload
-postiz upload video.mp4
+trelexa upload video.mp4
 ```
 
 ### File Size Limits
@@ -243,26 +243,26 @@ If you renamed a file with the wrong extension:
 ```bash
 # ❌ Wrong: PNG file renamed to .jpg
 mv image.png image.jpg
-postiz upload image.jpg  # Might fail
+trelexa upload image.jpg  # Might fail
 
 # ✅ Correct: Keep original extension
-postiz upload image.png
+trelexa upload image.png
 ```
 
 ## Testing File Upload
 
 ```bash
 # Set API key
-export POSTIZ_API_KEY=your_key
+export TRELEXA_API_KEY=your_key
 
 # Test image upload
-postiz upload test-image.jpg
+trelexa upload test-image.jpg
 
 # Test video upload
-postiz upload test-video.mp4
+trelexa upload test-video.mp4
 
 # Test audio upload
-postiz upload test-audio.mp3
+trelexa upload test-audio.mp3
 ```
 
 ## Error Messages
@@ -291,7 +291,7 @@ chmod 644 your-file.mp4
 
 **Solution:** Set your API key:
 ```bash
-export POSTIZ_API_KEY=your_key
+export TRELEXA_API_KEY=your_key
 ```
 
 ## Summary

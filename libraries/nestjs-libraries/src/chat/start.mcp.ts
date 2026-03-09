@@ -10,14 +10,14 @@ export const startMcp = async (app: INestApplication) => {
   const organizationService = app.get(OrganizationService, { strict: false });
 
   const mastra = await mastraService.mastra();
-  const agent = mastra.getAgent('postiz');
+  const agent = mastra.getAgent('trelexa');
   const tools = await agent.getTools();
 
   const server = new MCPServer({
     name: 'Trelexa.ai MCP',
     version: '1.0.0',
     tools,
-    agents: { postiz: agent },
+    agents: { trelexa: agent },
   });
 
   app.use(
