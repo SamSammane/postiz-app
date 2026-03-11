@@ -18,7 +18,23 @@ class MockRedis {
     return 1;
   }
 
-  // Add other Redis methods as needed for your tests
+  pipeline() {
+    const commands: Array<{ method: string; args: any[] }> = [];
+    const pipe = {
+      set: (...args: any[]) => { commands.push({ method: 'set', args }); return pipe; },
+      del: (...args: any[]) => { commands.push({ method: 'del', args }); return pipe; },
+      get: (...args: any[]) => { commands.push({ method: 'get', args }); return pipe; },
+      exec: async () => {
+        const results: any[] = [];
+        for (const cmd of commands) {
+          const result = await (this as any)[cmd.method](...cmd.args);
+          results.push([null, result]);
+        }
+        return results;
+      },
+    };
+    return pipe;
+  }
 }
 
 // Use real Redis if REDIS_URL is defined, otherwise use MockRedis

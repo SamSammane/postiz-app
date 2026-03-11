@@ -604,7 +604,7 @@ export class PostsService {
       } catch (err) {}
     }
 
-    return { error: true };
+    return { deleted: true };
   }
 
   async countPostsFromDay(orgId: string, date: Date) {

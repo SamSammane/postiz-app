@@ -19,6 +19,8 @@ export class ProvidersFactory {
         return new WalletProvider();
       case Provider.GENERIC:
         return new OauthProvider();
+      default:
+        throw new Error(`Unsupported provider: ${provider}`);
     }
   }
 }

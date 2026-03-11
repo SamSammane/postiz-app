@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, Res } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from '@gitroom/helpers/auth/auth.service';
 import { ioRedis } from '@gitroom/nestjs-libraries/redis/redis.service';
@@ -31,10 +31,10 @@ export class EnterpriseController {
           email
         );
       } catch (err) {
-        return { create: false };
+        return { success: false, error: 'Failed to create user' };
       }
     } catch (err) {
-      return { success: false };
+      return { success: false, error: 'Invalid token' };
     }
   }
 
@@ -50,7 +50,7 @@ export class EnterpriseController {
       };
 
       if (!load || !load.redirectUrl || !load.apiKey || !load.provider) {
-        return;
+        return { success: false, error: 'Missing required parameters' };
       }
 
       const org = await this._organizationService.getOrgByApiKey(load.apiKey);
@@ -74,16 +74,19 @@ export class EnterpriseController {
       const { codeVerifier, state, url } =
         await integrationProvider.generateAuthUrl();
 
+      const pipeline = ioRedis.pipeline();
       if (load.refreshId) {
-        await ioRedis.set(`refresh:${state}`, load.refreshId, 'EX', 3600);
+        pipeline.set(`refresh:${state}`, load.refreshId, 'EX', 3600);
       }
-
-      await ioRedis.set(`webhookUrl:${state}`, load.webhookUrl, 'EX', 3600);
-      await ioRedis.set(`redirect:${state}`, load.redirectUrl, 'EX', 3600);
-      await ioRedis.set(`organization:${state}`, org.id, 'EX', 3600);
-      await ioRedis.set(`login:${state}`, codeVerifier, 'EX', 3600);
+      pipeline.set(`webhookUrl:${state}`, load.webhookUrl, 'EX', 3600);
+      pipeline.set(`redirect:${state}`, load.redirectUrl, 'EX', 3600);
+      pipeline.set(`organization:${state}`, org.id, 'EX', 3600);
+      pipeline.set(`login:${state}`, codeVerifier, 'EX', 3600);
+      await pipeline.exec();
 
       return url;
-    } catch (err) {}
+    } catch (err) {
+      return { success: false, error: 'Failed to generate URL' };
+    }
   }
 }

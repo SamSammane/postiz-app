@@ -93,6 +93,51 @@ export class NoAuthIntegrationsController {
       await ioRedis.del(`onboarding:${body.state}`);
     }
 
+    const errorResult = (message: string): AuthTokenDetails => ({
+      error: message,
+      accessToken: '',
+      id: '',
+      name: '',
+      picture: '',
+      username: '',
+      additionalSettings: [],
+    });
+
+    let authResult: AuthTokenDetails;
+    try {
+      const auth = await integrationProvider.authenticate(
+        {
+          code: body.code,
+          codeVerifier: getCodeVerifier,
+          refresh: body.refresh,
+        },
+        details ? JSON.parse(details) : undefined
+      );
+
+      if (typeof auth === 'string') {
+        authResult = errorResult(auth);
+      } else if (refresh && integrationProvider.reConnect) {
+        try {
+          const newAuth = await integrationProvider.reConnect(
+            auth.id,
+            refresh,
+            auth.accessToken
+          );
+          authResult = { ...newAuth, refreshToken: body.refresh };
+        } catch (err: any) {
+          authResult = errorResult(err.message);
+        }
+      } else {
+        authResult = auth;
+      }
+    } catch (err) {
+      if (err instanceof NotEnoughScopes) {
+        authResult = errorResult(err.message);
+      } else {
+        authResult = errorResult('Authentication failed');
+      }
+    }
+
     const {
       error,
       accessToken,
@@ -103,77 +148,7 @@ export class NoAuthIntegrationsController {
       picture,
       username,
       additionalSettings,
-      // eslint-disable-next-line no-async-promise-executor
-    } = await new Promise<AuthTokenDetails>(async (res) => {
-      try {
-        const auth = await integrationProvider.authenticate(
-          {
-            code: body.code,
-            codeVerifier: getCodeVerifier,
-            refresh: body.refresh,
-          },
-          details ? JSON.parse(details) : undefined
-        );
-
-        if (typeof auth === 'string') {
-          return res({
-            error: auth,
-            accessToken: '',
-            id: '',
-            name: '',
-            picture: '',
-            username: '',
-            additionalSettings: [],
-          });
-        }
-
-        if (refresh && integrationProvider.reConnect) {
-          console.log('reconnect');
-          try {
-            const newAuth = await integrationProvider.reConnect(
-              auth.id,
-              refresh,
-              auth.accessToken
-            );
-            return res({ ...newAuth, refreshToken: body.refresh });
-          } catch (err: any) {
-            return res({
-              error: err.message,
-              accessToken: '',
-              id: '',
-              name: '',
-              picture: '',
-              username: '',
-              additionalSettings: [],
-            });
-          }
-        }
-
-        return res(auth);
-      } catch (err) {
-        if (err instanceof NotEnoughScopes) {
-          return res({
-            error: err.message,
-            accessToken: '',
-            id: '',
-            name: '',
-            picture: '',
-            username: '',
-            additionalSettings: [],
-          });
-        }
-
-        return res({
-          error: 'Authentication failed',
-          accessToken: '',
-          id: '',
-          name: '',
-          picture: '',
-          username: '',
-          additionalSettings: [],
-        });
-      }
-    });
+    } = authResult;
 
     if (error) {
       throw new NotEnoughScopes(error);

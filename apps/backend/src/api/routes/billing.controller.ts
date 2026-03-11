@@ -49,10 +49,10 @@ export class BillingController {
   async finishTrial(@GetOrgFromRequest() org: Organization) {
     try {
       await this._stripeService.finishTrial(org.paymentId);
-    } catch (err) {}
-    return {
-      finish: true,
-    };
+      return { finish: true };
+    } catch (err) {
+      return { finish: false, error: 'Failed to finish trial' };
+    }
   }
 
   @Get('/is-trial-finished')

@@ -79,12 +79,13 @@ export class AuthMiddleware implements NestMiddleware {
       const organization = (
         await this._organizationService.getOrgsByUserId(user.id)
       ).filter((f) => !f.users[0].disabled);
-      const setOrg =
-        organization.find((org) => org.id === orgHeader) || organization[0];
 
-      if (!organization) {
+      if (!organization.length) {
         throw new HttpForbiddenException();
       }
+
+      const setOrg =
+        organization.find((org) => org.id === orgHeader) || organization[0];
 
       if (!setOrg.apiKey) {
         await this._organizationService.updateApiKey(setOrg.id);
