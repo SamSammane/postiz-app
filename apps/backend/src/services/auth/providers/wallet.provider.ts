@@ -41,9 +41,13 @@ export class WalletProvider implements ProvidersInterface {
   }
 
   async getToken(code: string) {
-    const { publicKey, challenge, signature } = JSON.parse(
-      Buffer.from(code, 'base64').toString()
-    );
+    let parsed: any;
+    try {
+      parsed = JSON.parse(Buffer.from(code, 'base64').toString());
+    } catch {
+      return '';
+    }
+    const { publicKey, challenge, signature } = parsed;
 
     if (!publicKey || !challenge || !signature) {
       return '';
@@ -53,6 +57,9 @@ export class WalletProvider implements ProvidersInterface {
     if (redisGet !== challenge) {
       return '';
     }
+
+    // Consume the challenge to prevent replay attacks
+    await ioRedis.del(`wallet:${publicKey}`);
 
     const publicKeyUint8 = bs58.decode(publicKey);
     const messageUint8 = new TextEncoder().encode(challenge);
@@ -78,9 +85,13 @@ export class WalletProvider implements ProvidersInterface {
       };
     }
 
-    const { publicKey } = JSON.parse(
-      Buffer.from(providerToken, 'base64').toString()
-    );
+    let parsed: any;
+    try {
+      parsed = JSON.parse(Buffer.from(providerToken, 'base64').toString());
+    } catch {
+      return { id: '', email: '' };
+    }
+    const { publicKey } = parsed;
 
     return {
       id: String(`wallet_${publicKey}`),

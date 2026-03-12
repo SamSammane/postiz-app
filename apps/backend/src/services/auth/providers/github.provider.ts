@@ -10,44 +10,62 @@ export class GithubProvider implements ProvidersInterface {
   }
 
   async getToken(code: string): Promise<string> {
-    const { access_token } = await (
-      await fetch('https://github.com/login/oauth/access_token', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          client_id: process.env.GITHUB_CLIENT_ID,
-          client_secret: process.env.GITHUB_CLIENT_SECRET,
-          code,
-          redirect_uri: `${process.env.FRONTEND_URL}/settings`,
-        }),
-      })
-    ).json();
+    const response = await fetch('https://github.com/login/oauth/access_token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        client_id: process.env.GITHUB_CLIENT_ID,
+        client_secret: process.env.GITHUB_CLIENT_SECRET,
+        code,
+        redirect_uri: `${process.env.FRONTEND_URL}/settings`,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to get GitHub access token');
+    }
+
+    const { access_token, error } = await response.json();
+    if (error || !access_token) {
+      throw new Error(error || 'No access token returned from GitHub');
+    }
 
     return access_token;
   }
 
   async getUser(access_token: string): Promise<{ email: string; id: string }> {
-    const data = await (
-      await fetch('https://api.github.com/user', {
-        headers: {
-          Authorization: `token ${access_token}`,
-        },
-      })
-    ).json();
+    const userResponse = await fetch('https://api.github.com/user', {
+      headers: {
+        Authorization: `token ${access_token}`,
+      },
+    });
 
-    const [{ email }] = await (
-      await fetch('https://api.github.com/user/emails', {
-        headers: {
-          Authorization: `token ${access_token}`,
-        },
-      })
-    ).json();
+    if (!userResponse.ok) {
+      throw new Error('Failed to fetch GitHub user');
+    }
+
+    const data = await userResponse.json();
+
+    const emailsResponse = await fetch('https://api.github.com/user/emails', {
+      headers: {
+        Authorization: `token ${access_token}`,
+      },
+    });
+
+    if (!emailsResponse.ok) {
+      throw new Error('Failed to fetch GitHub user emails');
+    }
+
+    const emails = await emailsResponse.json();
+    if (!Array.isArray(emails) || !emails.length) {
+      throw new Error('No email found for GitHub user');
+    }
 
     return {
-      email: email,
+      email: emails[0].email,
       id: String(data.id),
     };
   }

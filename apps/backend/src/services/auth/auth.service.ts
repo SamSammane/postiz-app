@@ -221,11 +221,16 @@ export class AuthService {
   }
 
   async forgotReturn(body: ForgotReturnPasswordDto) {
-    const user = AuthChecker.verifyJWT(body.token) as {
-      id: string;
-      expires: string;
-    };
-    if (dayjs(user.expires).isBefore(dayjs())) {
+    let user: { id: string; expires: string };
+    try {
+      user = AuthChecker.verifyJWT(body.token) as {
+        id: string;
+        expires: string;
+      };
+    } catch {
+      return false;
+    }
+    if (!user?.id || dayjs(user.expires).isBefore(dayjs())) {
       return false;
     }
 
@@ -233,12 +238,17 @@ export class AuthService {
   }
 
   async activate(code: string, tracking: string) {
-    const user = AuthChecker.verifyJWT(code) as {
-      id: string;
-      activated: boolean;
-      email: string;
-    };
-    if (user.id && !user.activated) {
+    let user: { id: string; activated: boolean; email: string };
+    try {
+      user = AuthChecker.verifyJWT(code) as {
+        id: string;
+        activated: boolean;
+        email: string;
+      };
+    } catch {
+      return false;
+    }
+    if (user?.id && !user.activated) {
       const getUserAgain = await this._userService.getUserByEmail(user.email);
       if (getUserAgain.activated) {
         return false;
