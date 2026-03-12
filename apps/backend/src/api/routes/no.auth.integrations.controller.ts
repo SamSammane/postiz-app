@@ -70,6 +70,9 @@ export class NoAuthIntegrationsController {
     }
 
     const org = await this._organizationService.getOrgById(organization);
+    if (!org) {
+      throw new Error('Organization not found');
+    }
 
     if (!integrationProvider.customFields) {
       await ioRedis.del(`login:${body.state}`);
@@ -299,6 +302,9 @@ export class NoAuthIntegrationsController {
     }
 
     const org = await this._organizationService.getOrgById(organization);
+    if (!org) {
+      throw new Error('Organization not found');
+    }
 
     return this._integrationService.saveProviderPage(org.id, id, body);
   }

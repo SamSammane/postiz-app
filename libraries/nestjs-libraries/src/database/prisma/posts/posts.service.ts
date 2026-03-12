@@ -423,14 +423,14 @@ export class PostsService {
           ...post,
           image: await this.updateMedia(
             post.id,
-            JSON.parse(post.image || '[]'),
+            (() => { try { return JSON.parse(post.image || '[]'); } catch { return []; } })(),
             convertToJPEG
           ),
         }))
       ),
-      integrationPicture: posts[0]?.integration?.picture,
-      integration: posts[0].integrationId,
-      settings: JSON.parse(posts[0].settings || '{}'),
+      integrationPicture: posts?.[0]?.integration?.picture,
+      integration: posts?.[0]?.integrationId,
+      settings: (() => { try { return JSON.parse(posts?.[0]?.settings || '{}'); } catch { return {}; } })(),
     };
   }
 
@@ -461,14 +461,14 @@ export class PostsService {
           ...post,
           image: await this.updateMedia(
             post.id,
-            JSON.parse(post.image || '[]'),
+            (() => { try { return JSON.parse(post.image || '[]'); } catch { return []; } })(),
             convertToJPEG
           ),
         }))
       ),
-      integrationPicture: posts[0]?.integration?.picture,
-      integration: posts[0].integrationId,
-      settings: JSON.parse(posts[0].settings || '{}'),
+      integrationPicture: posts?.[0]?.integration?.picture,
+      integration: posts?.[0]?.integrationId,
+      settings: (() => { try { return JSON.parse(posts?.[0]?.settings || '{}'); } catch { return {}; } })(),
     };
 
     return list;
@@ -735,6 +735,9 @@ export class PostsService {
     action: 'schedule' | 'update' = 'schedule'
   ) {
     const getPostById = await this._postRepository.getPostById(id, orgId);
+    if (!getPostById) {
+      throw new BadRequestException('Post not found');
+    }
 
     // schedule: Set status to QUEUE and change date (reschedule the post)
     // update: Just change the date without changing the status
@@ -749,7 +752,7 @@ export class PostsService {
     if (action === 'schedule') {
       try {
         await this.startWorkflow(
-          getPostById.integration.providerIdentifier.split('-')[0].toLowerCase(),
+          getPostById.integration?.providerIdentifier?.split('-')[0]?.toLowerCase(),
           getPostById.id,
           orgId,
           getPostById.state === 'DRAFT' ? 'DRAFT' : 'QUEUE'
