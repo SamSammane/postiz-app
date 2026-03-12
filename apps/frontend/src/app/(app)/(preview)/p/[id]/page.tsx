@@ -148,7 +148,11 @@ export default async function Auth({
                       <div
                         className="text-sm whitespace-pre-wrap"
                         dangerouslySetInnerHTML={{
-                          __html: p.content,
+                          __html: (p.content || '')
+                            .replace(/&/g, '&amp;')
+                            .replace(/</g, '&lt;')
+                            .replace(/>/g, '&gt;')
+                            .replace(/"/g, '&quot;'),
                         }}
                       />
                       <div className="flex w-full gap-[10px]">

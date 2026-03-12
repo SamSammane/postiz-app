@@ -114,24 +114,28 @@ const LoadMessages: FC<{ id: string }> = ({ id }) => {
   return null;
 };
 
+const escapeHtml = (str: string) =>
+  str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+
 const Message: FC<UserMessageProps> = (props) => {
   const convertContentToImagesAndVideo = useMemo(() => {
-    return (props.message?.content || '')
-      .replace(/Video: (http.*mp4\n)/g, (match, p1) => {
+    const content = props.message?.content || '';
+    // Strip internal metadata tags first
+    const stripped = content
+      .replace(/\[\-\-Media\-\-\][\s\S]*?\[\-\-Media\-\-\]/g, '')
+      .replace(/\[--integrations--\][\s\S]*?\[--integrations--\]/g, '');
+    // Escape HTML to prevent XSS, then replace safe media patterns
+    return escapeHtml(stripped.trim())
+      .replace(/Video: (https?:\/\/[^\s&lt;&gt;&quot;]*?\.mp4)/g, (match, p1) => {
         return `<video controls class="h-[150px] w-[150px] rounded-[8px] mb-[10px]"><source src="${p1.trim()}" type="video/mp4">Your browser does not support the video tag.</video>`;
       })
-      .replace(/Image: (http.*\n)/g, (match, p1) => {
+      .replace(/Image: (https?:\/\/[^\s&lt;&gt;&quot;]*)/g, (match, p1) => {
         return `<img src="${p1.trim()}" class="h-[150px] w-[150px] max-w-full border border-newBgColorInner" />`;
-      })
-      .replace(/\[\-\-Media\-\-\](.*)\[\-\-Media\-\-\]/g, (match, p1) => {
-        return `<div class="flex justify-center mt-[20px]">${p1}</div>`;
-      })
-      .replace(
-        /(\[--integrations--\][\s\S]*?\[--integrations--\])/g,
-        (match, p1) => {
-          return ``;
-        }
-      );
+      });
   }, [props.message?.content]);
   return (
     <div
@@ -301,7 +305,7 @@ const OpenModal: FC<{
                 integration: integration.integrationId,
                 integrationPicture:
                   properties.find((p) => p.id === integration.integrationId)
-                    .picture || '',
+                    ?.picture || '',
                 settings: integration.settings || {},
                 posts: integration.posts.map((p) => ({
                   approvedSubmitForOrder: 'NO',

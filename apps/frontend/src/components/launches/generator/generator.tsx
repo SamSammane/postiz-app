@@ -125,7 +125,8 @@ const FirstStep: FC = (props) => {
         method: 'POST',
         body: JSON.stringify(value),
       });
-      if (!response.body) {
+      if (!response.ok || !response.body) {
+        setLoading(false);
         return;
       }
       const reader = response.body.getReader();

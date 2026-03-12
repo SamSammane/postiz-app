@@ -7,12 +7,21 @@ import clsx from 'clsx';
 import { useClickAway } from '@uidotdev/usehooks';
 import ReactLoading from 'react-loading';
 import { useT } from '@gitroom/react/translation/get.transation.service.client';
+function escapeHtml(str: string) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
 function replaceLinks(text: string) {
+  const escaped = escapeHtml(text);
   const urlRegex =
-    /(\bhttps?:\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gi;
-  return text.replace(
+    /(\bhttps?:\/\/[-A-Z0-9+&amp;@#/%?=~_|!:,.;]*[-A-Z0-9+&amp;@#/%=~_|])/gi;
+  return escaped.replace(
     urlRegex,
-    '<a class="cursor-pointer underline font-bold" target="_blank" href="$1">$1</a>'
+    '<a class="cursor-pointer underline font-bold" target="_blank" rel="noopener noreferrer" href="$1">$1</a>'
   );
 }
 export const ShowNotification: FC<{
