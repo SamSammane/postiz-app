@@ -101,7 +101,7 @@ export class IntegrationsController {
               : {}),
             display: p.profile,
             type: p.type,
-            time: JSON.parse(p.postingTimes),
+            time: (() => { try { return JSON.parse(p.postingTimes); } catch { return []; } })(),
             changeProfilePicture: !!findIntegration?.changeProfilePicture,
             changeNickName: !!findIntegration?.changeNickname,
             customer: p.customer,
@@ -232,8 +232,8 @@ export class IntegrationsController {
       );
 
       return { url };
-    } catch (err) {
-      return { err: true };
+    } catch (err: any) {
+      return { err: true, message: err?.message || 'Failed to generate auth URL' };
     }
   }
 
@@ -307,6 +307,14 @@ export class IntegrationsController {
     @GetOrgFromRequest() org: Organization,
     @Body() body: IntegrationFunctionDto
   ): Promise<any> {
+    return this._executeFunctionIntegration(org, body, 0);
+  }
+
+  private async _executeFunctionIntegration(
+    org: Organization,
+    body: IntegrationFunctionDto,
+    retryCount: number
+  ): Promise<any> {
     const getIntegration = await this._integrationService.getIntegrationById(
       org.id,
       body.id
@@ -322,8 +330,9 @@ export class IntegrationsController {
       throw new Error('Invalid provider');
     }
 
+    const blockedNames = ['constructor', '__proto__', 'prototype', 'toString', 'valueOf', 'hasOwnProperty'];
     // @ts-ignore
-    if (integrationProvider[body.name]) {
+    if (!blockedNames.includes(body.name) && typeof integrationProvider[body.name] === 'function') {
       try {
         // @ts-ignore
         const load = await integrationProvider[body.name](
@@ -336,6 +345,10 @@ export class IntegrationsController {
         return load;
       } catch (err) {
         if (err instanceof RefreshToken) {
+          if (retryCount >= 1) {
+            return false;
+          }
+
           const data = await this._refreshIntegrationService.refresh(
             getIntegration
           );
@@ -350,7 +363,7 @@ export class IntegrationsController {
             if (integrationProvider.refreshWait) {
               await timer(10000);
             }
-            return this.functionIntegration(org, body);
+            return this._executeFunctionIntegration(org, body, retryCount + 1);
           }
 
           return false;
@@ -393,9 +406,11 @@ export class IntegrationsController {
       id
     );
     if (isTherePosts.length) {
-      for (const post of isTherePosts) {
-        this._postService.deletePost(org.id, post.group).catch((err) => {});
-      }
+      await Promise.allSettled(
+        isTherePosts.map((post) =>
+          this._postService.deletePost(org.id, post.group)
+        )
+      );
     }
 
     return this._integrationService.deleteChannel(org.id, id);

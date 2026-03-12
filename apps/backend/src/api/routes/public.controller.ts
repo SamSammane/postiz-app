@@ -157,8 +157,34 @@ export class PublicController {
     @Res() res: Response,
     @Req() req: Request
   ) {
-    if (!url.endsWith('mp4')) {
+    if (!url || !url.endsWith('mp4')) {
       return res.status(400).send('Invalid video URL');
+    }
+
+    let parsed: URL;
+    try {
+      parsed = new URL(url);
+    } catch {
+      return res.status(400).send('Invalid URL');
+    }
+
+    if (!['http:', 'https:'].includes(parsed.protocol)) {
+      return res.status(400).send('Invalid URL protocol');
+    }
+
+    const hostname = parsed.hostname;
+    if (
+      hostname === 'localhost' ||
+      hostname === '127.0.0.1' ||
+      hostname === '0.0.0.0' ||
+      hostname === '::1' ||
+      hostname.startsWith('10.') ||
+      hostname.startsWith('192.168.') ||
+      hostname.startsWith('172.') ||
+      hostname.endsWith('.internal') ||
+      hostname.endsWith('.local')
+    ) {
+      return res.status(400).send('URL not allowed');
     }
 
     const ac = new AbortController();

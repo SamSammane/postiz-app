@@ -208,9 +208,15 @@ export class NoAuthIntegrationsController {
               Buffer.from(body.code, 'base64').toString()
             )
           : integrationProvider.isChromeExtension
-          ? AuthService.signJWT(
-              JSON.parse(Buffer.from(body.code, 'base64').toString())
-            )
+          ? (() => {
+              try {
+                return AuthService.signJWT(
+                  JSON.parse(Buffer.from(body.code, 'base64').toString())
+                );
+              } catch {
+                return undefined;
+              }
+            })()
           : undefined
       );
 
@@ -344,6 +350,13 @@ export class NoAuthIntegrationsController {
       return { success: false, reason: 'account_mismatch' };
     }
 
+    let parsedCookies: any;
+    try {
+      parsedCookies = JSON.parse(Buffer.from(body.cookies, 'base64').toString());
+    } catch {
+      throw new HttpException('Invalid cookies data', 400);
+    }
+
     await this._integrationService.createOrUpdateIntegration(
       undefined,
       false,
@@ -360,9 +373,7 @@ export class NoAuthIntegrationsController {
       false,
       undefined,
       undefined,
-      AuthService.signJWT(
-        JSON.parse(Buffer.from(body.cookies, 'base64').toString())
-      )
+      AuthService.signJWT(parsedCookies)
     );
 
     return { success: true };
